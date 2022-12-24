@@ -21,7 +21,6 @@ return [
         'localhost',
         'multitenant.test',
         'multitenant.php8.gainhq.com',
-        'multitenant.sharedwithexpose.com'
     ],
 
     /**
