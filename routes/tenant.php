@@ -73,7 +73,11 @@ Route::middleware([
             return $request->user();
         });
 
-        Route::get('create-setting', function () {
+        Route::get('create-setting', function (Request $request) {
+            $request->validate([
+                'value' => ['required', 'string'],
+                'key' => ['required', 'string', 'unique:settings,key'],
+            ]);
             return Setting::create(['key'=> request('key'), 'value' => request('value')]);
         });
     });

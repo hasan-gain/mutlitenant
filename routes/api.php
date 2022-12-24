@@ -38,7 +38,7 @@ Route::post('login', function (Request $request) {
 Route::post('register', function (Request $request) {
     $credentials = $request->validate([
         'name' => ['required', 'string'],
-        'email' => ['required', 'email', 'unique'],
+        'email' => ['required', 'email', 'unique:users,email'],
         'password' => ['required', 'confirmed'],
     ]);
 
@@ -70,9 +70,16 @@ Route::middleware([
         return $request->user();
     });
 
+    Route::get('/subscribers', function (Request $request) {
+        if(auth()->id() == 1) {
+            return response()->json(['success' => true, 'data' => \App\Models\User::query()->whereHas('tenant')->with('tenant', 'tenant.domains')->get()]);
+        }
+        return response()->json(['success' => false, 'message' => 'Unauthorised access.'], 401);
+    });
+
     Route::post('create-tenant', function (Request $request) {
         $request->validate([
-            'tenant' => ['required', 'string'],
+            'tenant' => ['required', 'string', 'unique:tenants,name'],
         ]);
         $tenant = App\Models\Tenant::create(['id' => request('tenant')]);
         $tenant->domains()->create(['domain' => request('tenant').'.multitenant.test']);
