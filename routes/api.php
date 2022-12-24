@@ -29,10 +29,10 @@ Route::post('login', function (Request $request) {
 
         $token = auth()->user()->createToken('device-1');
 
-        return ['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'];
+        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'], 200);
     }
 
-    return ['success' => false, 'message' => 'Credentials not matched'];
+    return response()->json(['success' => false, 'message' => 'Credentials not matched'], 422);
 });
 
 Route::post('register', function (Request $request) {
@@ -51,10 +51,10 @@ Route::post('register', function (Request $request) {
     if (Auth::attempt($credentials)) {
         $token = auth()->user()->createToken('device-1');
 
-        return ['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'];
+        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'], 200);
     }
 
-    return ['success' => false, 'message' => 'Could not create User'];
+    return response()->json(['success' => false, 'message' => 'Credentials not matched'], 422);
 });
 
 

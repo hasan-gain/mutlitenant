@@ -55,10 +55,10 @@ Route::middleware([
 
             $token = auth()->user()->createToken('device-1');
 
-            return ['success' => true, 'token' => $token->plainTextToken, 'type' => 'tenant'];
+            return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => 'tenant'], 200);
         }
 
-        return ['success' => false, 'message' => 'Credentials not matched'];
+        return response()->json(['success' => false, 'message' => 'Credentials not matched'], 422);
     });
 
     Route::middleware([
