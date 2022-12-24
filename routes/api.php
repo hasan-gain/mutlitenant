@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::post('login', function (Request $request) {
+    return ['tenant' => $request->url()];
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],

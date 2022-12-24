@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        User::create([
+            'name' => 'Landlord admin',
+            'email' => 'admin@demo.com',
+            'password' => bcrypt(123456)
+        ]);
         $this->call(TenantTableSeeder::class);
 //        $tenant = $user->tenant()->create(['id' => 'first']);
 //        $tenant->domains()->create(['domain' => 'first.localhost']);

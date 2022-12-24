@@ -18,7 +18,7 @@ return [
      */
     'central_domains' => [
 //        '127.0.0.1',
-//        'localhost',
+        'localhost',
         'multitenant.test',
         'multitenant.php8.gainhq.com',
         'multitenant.sharedwithexpose.com'
