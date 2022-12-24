@@ -20,7 +20,7 @@ return [
 //        '127.0.0.1',
         'localhost',
         'multitenant.test',
-        'test.multitenant.php8.gainhq.com',
+        'host.apimultitenant.php8.gainhq.com',
     ],
 
     /**
