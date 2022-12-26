@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Route::get('create-tenant', function (Request $request) {
+//    $request->validate([
+//        'tenant' => ['required', 'string', 'unique:tenants,name'],
+//    ]);
+//    $tenant = App\Models\Tenant::create(['name' => request('tenant'), 'user_id' => auth()->id()]);
+//    $tenant->domains()->create(['domain' => request('tenant').'.host.apimultitenant.php8.gainhq.com']);
+//    return ['success' => true, 'domain' => request('tenant').'.host.apimultitenant.php8.gainhq.com'];
+//});
+
 Route::get('/', function () {
     return ['success' => true, 'action' => 'home page'];
 });
@@ -29,7 +38,7 @@ Route::post('login', function (Request $request) {
 
         $token = auth()->user()->createToken('device-1');
 
-        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'], 200);
+        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => auth()->id() == 1 ? 'landlord' : 'tenant'], 200);
     }
 
     return response()->json(['success' => false, 'message' => 'Credentials not matched'], 422);
@@ -51,7 +60,7 @@ Route::post('register', function (Request $request) {
     if (Auth::attempt($credentials)) {
         $token = auth()->user()->createToken('device-1');
 
-        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => 'landlord'], 200);
+        return response()->json(['success' => true, 'token' => $token->plainTextToken, 'type' => auth()->id() == 1 ? 'landlord' : 'tenant'], 200);
     }
 
     return response()->json(['success' => false, 'message' => 'Credentials not matched'], 422);
@@ -67,7 +76,7 @@ Route::middleware([
 //    });
 
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        return $request->user()->load('tenant', 'tenant.domains');
     });
 
     Route::get('/subscribers', function (Request $request) {
@@ -81,9 +90,9 @@ Route::middleware([
         $request->validate([
             'tenant' => ['required', 'string', 'unique:tenants,name'],
         ]);
-        $tenant = App\Models\Tenant::create(['id' => request('tenant')]);
-        $tenant->domains()->create(['domain' => request('tenant').'.multitenant.test']);
-        return ['success' => true, 'domain' => request('tenant').'.multitenant.test'];
+        $tenant = App\Models\Tenant::create(['name' => request('tenant'), 'user_id' => auth()->id()]);
+        $tenant->domains()->create(['domain' => request('tenant').'.host.apimultitenant.php8.gainhq.com']);
+        return ['success' => true, 'domain' => request('tenant').'.host.apimultitenant.php8.gainhq.com'];
     });
 
 //    Route::get('delete-tenant', function () {
