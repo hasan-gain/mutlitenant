@@ -16,7 +16,7 @@ class AfterTenantCreatedDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Setting::create(['key'=> 'app_name', 'value' => tenant()->id]);
+        Setting::create(['key'=> 'app_name', 'value' => tenant()->name]);
         $user = User::create([
             'name' => ucfirst(tenant()->name) . ' user',
             'email' => tenant()->name . '@demo.com',
